@@ -15,15 +15,14 @@ public class Reader {
         int cont = 0;
 
         while(in.hasNextLine()){
-            float pos_x, pos_y, pos_z;
             float[] pos = new float[3];
 
             String line = in.nextLine();
             String[] tokens = line.split(",");
 
-            pos[0] = Float.parseFloat(tokens[0]);
-            pos[1] = Float.parseFloat(tokens[1]);
-            pos[2] = Float.parseFloat(tokens[2]);
+            pos[0] = Float.parseFloat(tokens[0]); //pos_x
+            pos[1] = Float.parseFloat(tokens[1]); //pos_y
+            pos[2] = Float.parseFloat(tokens[2]); //pos_z
 
             mat.add(pos);
 
