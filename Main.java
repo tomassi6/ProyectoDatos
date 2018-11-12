@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Main {
 
     /*
-      Este metodo es para convertir el arrayList de float[] a un arreglo de DroneBee[]
+      Este metodo es para convertir el arrayList de double[] a un arreglo de DroneBee[]
      */
 
     public static DroneBee[] convertToArray(ArrayList<double[]> arrayList){
@@ -53,7 +53,7 @@ public class Main {
     public static void RadixSort(DroneBee[] array){
 
 
-        // array temporales para convertir de float a int
+        // array temporales para convertir de double a long
         DroneBee[] temp = new DroneBee[array.length];
 
         for(int i = 0; i < array.length; i++){
@@ -113,7 +113,7 @@ public class Main {
                 temp[index] = array[i];
             }
 
-            // a[] = t[], comienza de nuevo hasta el último grupo
+            // array[] = temp[], comienza de nuevo hasta el último grupo
             array = temp.clone();
         }
 
@@ -131,7 +131,7 @@ public class Main {
 
 
     /*
-      Aca iria el metodo donde comparamos las coordenadas entre si para determinar cuales estan a menos
+      Aca esta lla seccion del metodo donde comparamos las coordenadas entre si para determinar cuales estan a menos
       de 100 metros o no.
 
      */
