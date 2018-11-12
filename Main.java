@@ -1,4 +1,7 @@
+import java.awt.geom.Path2D;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -50,10 +53,11 @@ public class Main {
 
     //Radix Sort
 
-    public static void RadixSort(DroneBee[] array){
+    public static DroneBee[] RadixSort(DroneBee[] array){
 
 
         // array temporales para convertir de double a long
+        DroneBee[] final_array = new DroneBee[array.length];
         DroneBee[] temp = new DroneBee[array.length];
 
         for(int i = 0; i < array.length; i++){
@@ -117,15 +121,19 @@ public class Main {
             array = temp.clone();
         }
 
+        final_array = array.clone();
+
 
         /*
             //Este Codigo es para saber si el algoritmo los esta ordenando.
 
         for(int i = 0; i < array.length; i++){
-            System.out.println("Posición ["+i+"] = "+ array[i].getPos_fx());
+            System.out.println( array[i].getPos_fx() + "," + array[i].getPos_fy() + "," + array[i].getPos_fz() );
         }
-
         */
+
+
+        return final_array;
 
     }
 
@@ -138,21 +146,23 @@ public class Main {
 
 
     public static boolean calculateDistanceLong(double xA, double xB){
-        return Math.abs(xB - xA) * 111111 <= 100;
+        return Math.abs(xB - xA) * 111111 <= 100d;
     }
 
 
     public static boolean calculateDistanceNormal(double xA, double xB, double yA, double yB, double zA, double zB){
 
-        return Math.sqrt(  Math.pow((xA - xB)*111111,2) +
-                           Math.pow((yA - yB)*111111,2) +
-                           Math.pow(zA - zB,2) ) <= 100;
+        return Math.sqrt(  Math.pow((xA - xB)*111111d,2) +
+                Math.pow((yA - yB)*111111d,2) +
+                Math.pow(zA - zB,2) ) <= 100d;
 
     }
 
-    public static void compararPos(DroneBee[] array){
+    public static ArrayList<double[]> compararPos(DroneBee[] array){
 
         //Este metodo G.O.A.T...
+
+        ArrayList<double[]> mat = new ArrayList<>();
 
         for (int i = 0; i < array.length - 1; i++ ){
 
@@ -167,24 +177,57 @@ public class Main {
 
             while(calculateDistanceLong(t, u) && j < array.length){
 
-                u = array[j].getPos_fx();
+
                 double w = array[j].getPos_fy();
                 double y = array[j].getPos_fz();
 
                 if(calculateDistanceNormal(t, u, v, w, x, y)){
-                    System.out.println("Abejas en riezgo de colision");
-                    System.out.println("Abeja 1: " + "," + t + "," + v + "," + x);
-                    System.out.println("Abeja 2: " + "," + u + "," + w + "," + y);
-                    System.out.println("------------------------------------------");
+
+                    double[] colisiones = new double[6];
+
+                    colisiones[0] = t;
+                    colisiones[1] = v;
+                    colisiones[2] = x;
+
+                    colisiones[3] = u;
+                    colisiones[4] = w;
+                    colisiones[5] = y;
+
+                    mat.add(colisiones);
+
                 }
                 j++;
+                if (j < array.length) u = array[j].getPos_fx();
             }
 
         }
 
+        return mat;
+
     }
 
+    public static void guardar_Archivo(ArrayList<double[]> array, String fileName) throws FileNotFoundException{
 
+        String nombre_archivo = "respuestasEn"+fileName+".txt";
+
+        try (PrintWriter writer = new PrintWriter(nombre_archivo, "UTF-8")) {
+
+            System.out.println("Guardando archivo con colisiones....");
+
+            for(int i = 0; i < array.size(); i++){
+                int val = i + 1;
+                writer.println("Abeja Con Riezgo de Colisiones numero: " + val);
+                writer.println("Abeja 1: " + array.get(i)[0] + "," + array.get(i)[1] + "," + array.get(i)[2]);
+                writer.println("Abeja 2: " + array.get(i)[3] + "," + array.get(i)[4] + "," + array.get(i)[5]);
+                writer.println("------------------------------------------------------------------");
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("Error al guardar el archivo...");
+        }
+
+
+    }
 
     public static void main(String[] args){
 
@@ -203,10 +246,13 @@ public class Main {
         ArrayList<double[]> temp = readFile.getList();
 
         DroneBee[] array = convertToArray(temp);
-        RadixSort(array);
-
-        compararPos(array);
-
+        DroneBee[] array_final = RadixSort(array);
+        ArrayList<double[]> colisiones = compararPos(array_final);
+        try {
+            guardar_Archivo(colisiones,fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
     }
 
 }
