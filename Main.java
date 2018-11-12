@@ -30,9 +30,15 @@ public class Main {
      posicion x de lar coordenadas
      */
 
-       //Obtener bytes de entero
-    public static byte[] getBytes(int v) {
-     byte[] writeBuffer = new byte[4];
+      
+   
+    //Obtener bytes de long
+    public static byte[] getBytes(long v) {
+     byte[] writeBuffer = new byte[8];
+     writeBuffer[7] = (byte) ((v >>> 56) & 0xFF);
+     writeBuffer[6] = (byte) ((v >>> 48) & 0xFF);
+     writeBuffer[5] = (byte) ((v >>> 40) & 0xFF);
+     writeBuffer[4] = (byte) ((v >>> 32) & 0xFF);
      writeBuffer[3] = (byte) ((v >>> 24) & 0xFF);
      writeBuffer[2] = (byte) ((v >>> 16) & 0xFF);
      writeBuffer[1] = (byte) ((v >>> 8) & 0xFF);
@@ -40,38 +46,38 @@ public class Main {
      return writeBuffer;
    }
 
-    //convertir a entero
-    public static int toInt32(byte[] data, int offset) {
-    return (data[offset] & 0xFF) | ((data[offset + 1] & 0xFF) << 8)
-    | ((data[offset + 2] & 0xFF) << 16)
-    | ((data[offset + 3] & 0xFF) << 24);
+    //convertir a long
+    public static long toLong(byte[] data, int offset) {
+        return ((long)(data[offset + 7] & 0xFF) << 56) | ((long)(data[offset + 6] & 0xFF) << 48)
+            | ((long)(data[offset + 5] & 0xFF) << 40)
+            | ((long)(data[offset + 4] & 0xFF) << 32)  | ((long)(data[offset + 3] & 0xFF) << 24)  | ((long)(data[offset + 2] & 0xFF) << 16)  | ((long)(data[offset + 1] & 0xFF) << 8)  | ((long)(data[offset] & 0xFF));
     }
 
     //Radix Sort
 
-    public static float[] RadixSort(float[] array){
+    public static double[] RadixSort(double[] array){
 
 
-    // array temporales para convertir de float a int
-        int[] t = new int[array.length];
-        int[] a = new int[array.length];
+    // array temporales para convertir de double a long
+        long[] t = new long[array.length];
+        long[] a = new long[array.length];
         for(int i = 0; i < array.length; i++){
-                byte[] x = getBytes(Float.floatToRawIntBits(array[i]));
-                a[i] = toInt32(x, 0);
+                byte[] x = getBytes(Double.doubleToRawLongBits(array[i]));
+                a[i] = toLong(x, 0);
 
         }
 
-    int groupLength = 4;
-    int bitLength = 32;
+    int groupLength = 8;
+    int bitLength = 64;
 
     // dimension de 2^r, numero de valores posibles de un número de r bits
-    int[] count = new int[1 << groupLength];
-    int[] pref = new int[1 << groupLength];
+    long[] count = new long[1 << groupLength];
+    long[] pref = new long[1 << groupLength];
     int groups = bitLength / groupLength;
     int mask = (1 << groupLength) - 1;
     int negatives = 0, positives = 0;
-
-    for(int c = 0, shift = 0; c < groups; c++, shift += groupLength)
+    int shift = 0;
+     for(int c = 0; c < groups; c++, shift += groupLength)
     {
         // reset array count
         for(int j = 0; j < count.length; j++){
@@ -80,7 +86,7 @@ public class Main {
 
         for(int i = 0; i < a.length; i++)
         {
-            count[(a[i] >> shift) & mask]++;
+            count[(int)(a[i] >> shift) & mask]++;
 
             // Cuenta todos los valores negativos en primera ronda
             if(c == 0 && a[i] < 0)
@@ -97,7 +103,7 @@ public class Main {
         // ordena elementos de a[] a t[]
         for(int i = 0; i < a.length; i++){
             // Obtiene índice para ordenar el número
-            int index = pref[(a[i] >> shift) & mask]++;
+            int index = (int) pref[(int)(a[i] >> shift) & mask]++;
 
             if(c == groups - 1)
             {
@@ -115,16 +121,20 @@ public class Main {
         a = t.clone();
     }
 
-    // Convierte los ints a la matriz float de nuevo
-    float[] ret = new float[a.length];
+    // Convierte long a la matriz double de nuevo
+    double[] ret = new double[a.length];
     for(int i = 0; i < a.length; i++){
-        int y = toInt32(getBytes(a[i]), 0);
-        ret[i] = Float.intBitsToFloat(y);
+        long y = toLong(getBytes(a[i]), 0);
+        ret[i] = Double.longBitsToDouble(y);
         System.out.println("Posición ["+i+"] = "+ ret[i]);
     }
-    return ret;
+      return ret;
     }
 
+
+    
+   
+    
 
     /*
       Aca iria el metodo donde comparamos las coordenadas entre si para determinar cuales estan a menos
