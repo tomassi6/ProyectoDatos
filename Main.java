@@ -215,7 +215,7 @@ public class Main {
 
             for(int i = 0; i < array.size(); i++){
                 int val = i + 1;
-                writer.println("Abeja Con Riezgo de Colisiones numero: " + val);
+                writer.println("Abeja Con Riesgo de Colisiones #: " + val);
                 writer.println("Abeja 1: " + array.get(i)[0] + "," + array.get(i)[1] + "," + array.get(i)[2]);
                 writer.println("Abeja 2: " + array.get(i)[3] + "," + array.get(i)[4] + "," + array.get(i)[5]);
                 writer.println("------------------------------------------------------------------");
@@ -252,7 +252,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
-        
+
     }
 
 }
