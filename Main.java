@@ -216,7 +216,7 @@ public class Main {
 
 
     public static void main(String[] args){
-
+        long Tinicial, Tfinal, Ttotal;
         Reader readFile = new Reader();
         Scanner console = new Scanner(System.in);
 
@@ -232,6 +232,7 @@ public class Main {
         ArrayList<double[]> temp = readFile.getList();
 
         DroneBee[] array = convertToArray(temp);
+        Tinicial = System.currentTimeMillis();
         DroneBee[] array_final = RadixSort(array);
 
         try {
@@ -239,7 +240,10 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
-        
+        Tfinal = System.currentTimeMillis();
+        Ttotal = Tfinal - Tinicial ;
+        System.out.println("Tiempo de ejecución: " + Ttotal + " milisegundos.");
+            
     }
 
 }
