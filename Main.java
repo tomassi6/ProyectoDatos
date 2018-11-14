@@ -222,6 +222,8 @@ public class Main {
 
         System.out.println("Ingrese el nombre del archivo......... no ponga el .txt");
         String fileName = console.nextLine();
+        
+        Tinicial = System.currentTimeMillis();
 
         try {
             readFile.leerArchivo(fileName);
@@ -232,7 +234,7 @@ public class Main {
         ArrayList<double[]> temp = readFile.getList();
 
         DroneBee[] array = convertToArray(temp);
-        Tinicial = System.currentTimeMillis();
+        
         DroneBee[] array_final = RadixSort(array);
 
         try {
