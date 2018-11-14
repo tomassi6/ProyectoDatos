@@ -189,12 +189,17 @@ public class Main {
                     double y = array[j].getPos_fz();
 
                     if(calculateDistanceNormal(t, u, v, w, x, y)){
-                        eval++;
-
+                       eval++;
+                        /*
+                        
+                        //Este codigo es para ir imprimiendo las colisiones mientras se detectan, hace que el programa tome mas tiempo
+                        //para ejecutarse.
+                        
                        System.out.println("Abeja Con Riesgo de Colisiones numero: " + eval);
                        System.out.println("Abeja 1: " + t + "," + v + "," + x );
                        System.out.println("Abeja 2: " + u + "," + w + "," + y );
                        System.out.println("------------------------------------------------------------------");
+                       */
 
                        writer.println("Abeja Con Riesgo de Colisiones numero: " + eval);
                        writer.println("Abeja 1: " + t + "," + v + "," + x);
