@@ -8,7 +8,7 @@ public class Reader {
     private ArrayList<double[]> mat = new ArrayList<>();
 
     public void leerArchivo(String file) throws FileNotFoundException{
-        Scanner in = new Scanner(new File(file+".txt"));
+        Scanner in = new Scanner(new File(./txt_files/file+".txt"));
 
         String visaje_linea = in.nextLine(); // La primera line no sirve pa nada
 
